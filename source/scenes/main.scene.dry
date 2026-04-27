@@ -604,7 +604,7 @@ max-cards: 3
 
 #Here, the main deck will be displayed. Clicking on the deck draws a card into your hand. Clicking on a card activates that card.
 
-{!<div class="scrollable-box">!}
+{!<div class="scrollable-box-title">Vorwärts</div><div class="scrollable-box">!}
 
 {!<p class="both">!}[? if year = 1928 and month = 1: It is a bright time for German democracy. After a period of struggle, inflation is finally under control, and the economy is expanding steadily. In foreign policy, we have reached agreements with the Western powers and the <span style="color: #750e0e;">Soviet Union</span> that might make genuine peace a reality. <br><br> Now, the task of <span style="color: #c00000;">Social Democracy</span> is to prepare for the next election. The <span style="color: #000000;">bourgeois</span>-<span style="color: #3E88B3;">right</span> government of Wilhelm Marx is unpopular, and we stand to gain. Perhaps the next government will have a <span style="color: #c00000;">socialist</span> majority. ?]{!</p>!}
 
@@ -1276,7 +1276,7 @@ max-cards: 3
 
 {!<p class="other">!}[? if year = 1934 and month = 2 and (week == 2 or not rubicon) and not austrian_parliament_seen: The Austrian Civil War has begun and ended in a matter of three days, fought between the <span style="color: #C8102E;">Republican Protection League</span> and Austria's <span style="color: #7A3C00;">Austrofascist</span> regime, resulting in a defeat for the <span style="color: #C8102E;">socialists</span> across the border. The uprising was sparked by efforts to suppress the remnants of the <span style="color: #C8102E;">Austrian Social Democrats</span> and their paramilitary wing. However, the poorly coordinated and weakened movement was swiftly crushed by the army. Perhaps things would have gone more differently if they have taken up arms earlier. ?]{!</p>!}
 
-{!</div>!}
+{!</div></div>!}
 
 - @party
 - @govt
@@ -1892,7 +1892,7 @@ max-cards: 4
 
 #Here, the main deck will be displayed. Clicking on the deck draws a card into your hand. Clicking on a card activates that card.
 
-{!<div class="scrollable-box">!}
+{!<div class="scrollable-box-title">Vorwärts</div><div class="scrollable-box">!}
 
 {!<p class="both">!}[? if year = 1928 and month = 1: It is a bright time for German democracy. After a period of struggle, inflation is finally under control, and the economy is expanding steadily. In foreign policy, we have reached agreements with the Western powers and the <span style="color: #750e0e;">Soviet Union</span> that might make genuine peace a reality. <br><br> Now, the task of <span style="color: #c00000;">Social Democracy</span> is to prepare for the next election. The <span style="color: #000000;">bourgeois</span>-<span style="color: #3E88B3;">right</span> government of Wilhelm Marx is unpopular, and we stand to gain. Perhaps the next government will have a <span style="color: #c00000;">socialist</span> majority. ?]{!</p>!}
 
@@ -2576,10 +2576,11 @@ max-cards: 4
 
 {!<p class="other">!}[? if year = 1934 and month = 2 and (week == 2 or not rubicon) and not austrian_parliament_seen: The Austrian Civil War has begun and ended in a matter of three days, fought between the <span style="color: #C8102E;">Republican Protection League</span> and Austria's <span style="color: #7A3C00;">Austrofascist</span> regime, resulting in a defeat for the <span style="color: #C8102E;">socialists</span> across the border. The uprising was sparked by efforts to suppress the remnants of the <span style="color: #C8102E;">Austrian Social Democrats</span> and their paramilitary wing. However, the poorly coordinated and weakened movement was swiftly crushed by the army. Perhaps things would have gone more differently if they have taken up arms earlier. ?]{!</p>!}
 
-{!</div>!}
+{!</div></div>!}
 
 - @party
 - @govt
+- @states
 - @eco
 - @time
 - @time_2
@@ -2601,6 +2602,13 @@ card-image: img/reichstag_2.jpg
 is-deck: true
 
 - #govt_affairs
+
+@states
+title: Local State Affairs
+card-image: 
+is-deck: true
+
+- #state_affairs
 
 @time
 title: Bide our Time
