@@ -576,6 +576,61 @@ Q.true_other_r = Q.other_r - Q.cnblp_r - Q.wp_r - Q.csvd_r - Q.aspd_r;
 if (!Q.csvd_formed && !Q.aspd_other) Q.true_other_r += Q.csvd_r;
 if (!Q.aspd_other) Q.true_other_r += Q.aspd_r;
 
+// Calculate changes for small parties
+if (Q.wp_r) {
+    Q.str_votes_change_wp = Q.wp_votes - Q.previous_wp_last_election_votes;
+    var sign2 = Q.str_votes_change_wp > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_votes_change_wp < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_votes_change_wp = sign2 + Math.abs(Q.str_votes_change_wp).toFixed(1);
+
+    Q.str_change_wp = Q.wp_r - Q.old_wp_r;
+    var sign2 = Q.str_change_wp > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_change_wp < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_change_wp = sign2 + Math.abs(Q.str_change_wp).toFixed(1);
+}
+
+if (Q.cnblp_r) {
+    Q.str_votes_change_cnblp = Q.cnblp_votes - Q.previous_cnblp_last_election_votes;
+    var sign2 = Q.str_votes_change_cnblp > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_votes_change_cnblp < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_votes_change_cnblp = sign2 + Math.abs(Q.str_votes_change_cnblp).toFixed(1);
+
+    Q.str_change_cnblp = Q.cnblp_r - Q.old_cnblp_r;
+    var sign2 = Q.str_change_cnblp > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_change_cnblp < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_change_cnblp = sign2 + Math.abs(Q.str_change_cnblp).toFixed(1);
+}
+
+if (Q.csvd_r && Q.csvd_formed) {
+    Q.str_votes_change_csvd = Q.csvd_votes - Q.previous_csvd_last_election_votes;
+    var sign2 = Q.str_votes_change_csvd > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_votes_change_csvd < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_votes_change_csvd = sign2 + Math.abs(Q.str_votes_change_csvd).toFixed(1);
+
+    Q.str_change_csvd = Q.csvd_r - Q.old_csvd_r;
+    var sign2 = Q.str_change_csvd > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_change_csvd < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_change_csvd = sign2 + Math.abs(Q.str_change_csvd).toFixed(1);
+}
+
 if (!Q.bavaria_spd) Q.bvp_votes = Q.z_votes*0.2;
 if (Q.bavaria_spd) Q.bvp_votes = Q.z_votes*0.1;
 if (Q.election_boycott) {
@@ -631,8 +686,30 @@ if (Q.bvp_r) {
 Q.previous_bvp_last_election_votes = Q.bvp_votes;
 Q.old_bvp_r = Q.bvp_r;
 
-console.log("z_minus_bvp_votes:", Q.z_minus_bvp_votes);
-console.log("pre_previous_z_last_election_votes:", Q.pre_previous_z_last_election_votes);
+    if (Q.wp_r) {
+        Q.previous_wp_last_election_votes = Q.wp_votes;
+        Q.old_wp_r = Q.wp_r;
+    }
+
+    if (Q.cnblp_r) {
+        Q.previous_cnblp_last_election_votes = Q.cnblp_votes;
+        Q.old_cnblp_r = Q.cnblp_r;
+    }
+
+    if (Q.csvd_r && Q.csvd_formed) {
+        Q.previous_csvd_last_election_votes = Q.csvd_votes;
+        Q.old_csvd_r = Q.csvd_r;
+    }
+
+    // Calculate change for true other (others excluding WP, CNBLP, CSVD, ASPD)
+    Q.old_true_other_r = Q.old_other_r - (Q.old_wp_r || 0) - (Q.old_cnblp_r || 0) - (Q.old_csvd_r || 0) - (Q.old_aspd_r || 0);
+    Q.str_change_true_other = Q.true_other_r - Q.old_true_other_r;
+    var sign2 = Q.str_change_true_other > 0 ?
+        '<img src="img/arrowup.png"> ' :
+        Q.str_change_true_other < 0 ?
+        '<img src="img/arrowdown.png"> ' :
+        '<img src="img/steady.png"> ';
+    Q.str_change_true_other = sign2 + Math.abs(Q.str_change_true_other).toFixed(1);
 
 Q.str_votes_change_z = Q.z_minus_bvp_votes - Q.pre_previous_z_last_election_votes;
 var sign2 = Q.str_votes_change_z > 0 
@@ -1710,6 +1787,8 @@ go-to: achievement_check_e
 
 [? if other_dnef: {!<tr><td><div class="box2" style='background-color:#707070'> </div> !} Others: {!</td><td>!} [+ other_votes +]% {!</td><td>!} [+ str_votes_change_other +] {!</td><td>!} [+ other_r +]% {!</td><td>!} [+ str_change_other +] {!</td></tr>!} ?]
 
+[? if other_dnef and wp_r: {!<tr><td><div class="box2" style='background-color:#2596be'> </div> !} WP: {!</td><td>!} [+ wp_votes +]% {!</td><td>!} [+ str_votes_change_wp +] {!</td><td>!} [+ wp_r +]% {!</td><td>!} [+ str_change_wp +] {!</td></tr>!} ?]
+
 [? if kvp_formed and not cvp_kvp_formed and kvp_dnef: {!<tr><td><div class="box2" style='background-color:#0072C0'> </div> !}KVP: {!</td><td>!} [+ kvp_votes +]% {!</td><td>!} [+ str_votes_change_kvp +] {!</td><td>!} [+ kvp_r +]% {!</td><td>!} [+ str_change_kvp +] {!</td></tr>!} ?]
 
 [? if not cvp_formed and dnvp_dnef: {!<tr><td><div class="box2" style='background-color:#316B8F'> </div> !} DNVP: {!</td><td>!} [+ dnvp_votes +]% {!</td><td>!} [+ str_votes_change_dnvp +] {!</td><td>!} [+ dnvp_r +]% {!</td><td>!} [+ str_change_dnvp +] {!</td></tr>!}?]
@@ -1737,8 +1816,14 @@ go-to: achievement_check_e
 [? if not z_dnef: {!<tr><td><div class="box" style='background-color:#A2D8E0'> </div> !} BVP: {!</td><td>!} [+ bvp_votes +]% {!</td><td>!} [+ str_votes_change_bvp +] {!</td><td>!} [+ bvp_r +]% {!</td><td>!} [+ str_change_bvp +] {!</td></tr>!} ?]
 
 [? if not lvp_formed and dvp_exist and not dvp_dnef: {!<tr><td><div class="box" style='background-color:#D5AC27'> </div> !} DVP: {!</td><td>!} [+ dvp_votes +]% {!</td><td>!} [+ str_votes_change_dvp +] {!</td><td>!} [+ dvp_r +]% {!</td><td>!} [+ str_change_dvp +] {!</td></tr>!} ?]
+
+[? if wp_r: {!<tr><td><div class="box" style='background-color:#2596be'> </div> !} WP: {!</td><td>!} [+ wp_votes +]% {!</td><td>!} [+ str_votes_change_wp +] {!</td><td>!} [+ wp_r +]% {!</td><td>!} [+ str_change_wp +] {!</td></tr>!} ?]
+
+[? if cnblp_r: {!<tr><td><div class="box" style='background-color:#90EE90'> </div> !} CNBLP: {!</td><td>!} [+ cnblp_votes +]% {!</td><td>!} [+ str_votes_change_cnblp +] {!</td><td>!} [+ cnblp_r +]% {!</td><td>!} [+ str_change_cnblp +] {!</td></tr>!} ?]
+
+[? if csvd_r and csvd_formed: {!<tr><td><div class="box" style='background-color:#87CEEB'> </div> !} CSVD: {!</td><td>!} [+ csvd_votes +]% {!</td><td>!} [+ str_votes_change_csvd +] {!</td><td>!} [+ csvd_r +]% {!</td><td>!} [+ str_change_csvd +] {!</td></tr>!} ?]
  
-[? if not other_dnef: {!<tr><td><div class="box" style='background-color:#a0a0a0'> </div> !} Others: {!</td><td>!} [+ other_votes +]% {!</td><td>!} [+ str_votes_change_other +] {!</td><td>!} [+ other_r +]% {!</td><td>!} [+ str_change_other +] {!</td></tr>!} ?]
+[? if not other_dnef: {!<tr><td><div class="box" style='background-color:#a0a0a0'> </div> !} Others: {!</td><td>!} [+ other_votes +]% {!</td><td>!} [+ str_votes_change_other +] {!</td><td>!} [+ true_other_r +]% {!</td><td>!} [+ str_change_true_other +] {!</td></tr>!} ?]
 
 [? if aspd_other: {!<tr><td><div class="box2" style='background-color:#fe9e00'> </div> !} ASPD: {!</td><td>!} [+ aspd_votes +]% {!</td><td>!} [+ str_votes_change_aspd +] {!</td><td>!} [+ aspd_r +]% {!</td><td>!} [+ str_change_aspd +] {!</td></tr>!} ?]
 
